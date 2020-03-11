@@ -1,0 +1,16 @@
+import numpy as np 
+import matplotlib.pyplot as plt
+import matplotlib
+
+%matplotlib inline
+
+x = np.random.randn(1000,1)
+w = np.random.normal(0, 0.1, 1000)
+y = 1.2 + 2.3*x + 10*w
+
+ax.plot(x, y)
+
+ax.set (xlabel='x', ylabel='y', title='Exercício 3')
+ax.grid()
+
+plt.show()
