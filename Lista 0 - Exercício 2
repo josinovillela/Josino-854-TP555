@@ -1,0 +1,49 @@
+//Exemplo 1 - Slide de aula
+
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+data = np.random.randn(1000000)
+
+plt.subplot(1, 2, 1) 
+plt.title('pdf')
+plt.hist(data , bins=100, normed=True , color='b')
+
+plt.subplot(1, 2, 2) 
+plt.title('cdf') 
+plt.hist(data , bins=100, normed=True , color='g', cumulative=True)
+
+//Exemplo 2 - Slide de aula
+
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+ax = plt.subplot(111, projection='3d') 
+X, Y, Z = axes3d.get_test_data (0.1) 
+ax.plot_wireframe(X, Y, Z)
+
+//Exemplo 3 - Slide de aula
+
+import numpy as np 
+import matplotlib.pyplot as plt 
+from sklearn.neural_network import MLPRegressor
+
+%matplotlib inline
+
+x = np.arange(-10, 10, 0.1)
+y = 12 + 3 * np.exp(-0.05*x) + 1.4 * np.sin(1.2*x) + 2.1 * np.sin(-2.2*x + 3)
+
+np.random.seed(42)
+
+y_noise = y + np.random.normal(0, 0.5, size = len(y))
+
+mlp = MLPRegressor(hidden_layer_sizes=(30,20,10), max_iter=10000, solver='lbfgs', alpha=0.9, activation='tanh')
+yfit = mlp.fit(x[:, None], y_noise).predict(x[:, None])
+
+plt.figure(figsize= (10,8)) 
+plt.plot(x, y_noise, 'o', label = 'dado original + ruido') 
+plt.plot(x, y, 'k', label = 'dado original')
+plt.plot(x, yfit, '-r', label = 'curvaajustada com MLP', zorder = 10) 
+plt.legend() 
+plt.xlabel('X') 
+plt.ylabel('y')
