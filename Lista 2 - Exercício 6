@@ -1,0 +1,107 @@
+# Import all the necessary libraries.
+import numpy as np
+from numpy import matlib as mb
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+
+# magic Jupyter function that allows plots to be interactive.
+%matplotlib notebook
+
+# Sets the number of examples.
+M = 1000
+
+# Create target function.
+x0 = np.matlib.ones(M)
+x0 = x0.T
+x1 = 5*np.random.randn(M, 1)
+x2 = 5*np.random.randn(M, 1)
+y = 3*x0 + (1.5*x1) + (2.3*x2*x2) + 5*np.random.randn(M, 1)
+
+# Generate values for parameters.
+N = 200
+
+a0 = np.linspace(-12.0, 14.0, N)
+a1 = np.linspace(-12.0, 14.0, N)
+a2 = np.linspace(-12.0, 14.0, N)
+
+A0, A1, A2 = np.meshgrid(a0, a1, a2)
+
+# Generate points for plotting the cost-function surface.
+J = np.zeros((N,N,N))
+for iter1 in range(0, N):
+    for iter2 in range(0, N):
+        for iter3 in range(0, N):
+            yhat = A0[iter1][iter2][iter3]*x0 + A1[iter1][iter2][iter3]*x1 + A2[iter1][iter2][iter3]*x2
+            J[iter1][iter2][iter3] = (1/M)*np.sum( np.square(y - yhat)  )
+            
+# Concatenate both column vectors.
+X = np.c_[x0, x1, x2]
+
+# Closed-form solution.
+a_opt = np.linalg.pinv(np.transpose(X).dot(X)).dot(np.transpose(X).dot(y))
+yhat = a_opt[0, 0]*x0 + a_opt[1, 0]*x1 + a_opt[2, 0]*x2
+Joptimum = (1/M)*np.sum(np.power((y - yhat), 2) )
+
+# Batch gradient descent solution.
+
+# learning rate.
+alpha = 0.02
+# Maximum number of iterations.
+n_iterations = 1000
+
+# Random initialization of parameters.
+a = np.zeros((3,1))
+a[0] = -10;
+a[1] = -10;
+a[2] = -10;
+
+# Create vector for parameter history.
+a_hist = np.zeros((3, n_iterations+1))
+# Initialize history vector.
+a_hist[0, 0] = a[0]
+a_hist[1, 0] = a[1]
+a_hist[2, 0] = a[2]
+
+
+# Create array for storing error values.
+Jgd = np.zeros(n_iterations+1)
+
+Jgd[0] = (1/M)*sum(np.power(y - X.dot(a), 2))
+
+# Batch gradient-descent loop.
+iteration = 0
+error = 1
+grad_hist = np.zeros((3, n_iterations))
+#while iteration < n_iterations and error > 0.001:a
+while iteration < n_iterations:
+    gradients = -2/M * X.T.dot(y - X.dot(a))
+    grad_hist[0, iteration] = gradients[0]
+    grad_hist[1, iteration] = gradients[1]
+    grad_hist[2, iteration] = gradients[2]
+    a = a - alpha * gradients
+    a_hist[0, iteration+1] = a[0]
+    a_hist[1, iteration+1] = a[1]
+    a_hist[2, iteration+1] = a[2]
+    Jgd[iteration+1] = (1/M)*sum(np.power( (y - X.dot(a)) , 2))
+    error = np.abs(Jgd[iteration+1] - Jgd[iteration])
+    iteration = iteration + 1
+    
+fig = plt.figure(figsize=(7,7))
+plt.plot(np.arange(0, iteration), Jgd[0:iteration])
+plt.xlim((0, iteration))
+plt.yscale('log')
+plt.xlabel('Iteration')
+plt.ylabel('$J_e$')
+plt.title('Error vs. Iteration number')
+plt.show()
+
+plt.savefig("error_vs_iteration_bgd.png", dpi=600)
+
+print('a0_opt: ' + str(a_opt[0, 0]))
+print('a1_opt: ' + str(a_opt[1, 0]))
+print('a2_opt: ' + str(a_opt[2, 0]))
+
+print('a0_gd: ' + str(a[0, 0]))
+print('a1_gd: ' + str(a[1, 0]))
+print('a2_gd: ' + str(a[2, 0]))
