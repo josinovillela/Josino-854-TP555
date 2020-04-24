@@ -1,0 +1,19 @@
+Para casos em que há uma grande diferença entre os erros de treinamento e validação, pode-se resolvê-los através das formas indicadas abaixo.
+
+A. Modelos Sobreajustados:
+
+Se o valor do erro de treinamento for pequeno e o do erro de validação grande, indica que o modelo está sobreajustado. Para que possamos resolver este problema, podemos agir de duas formas.
+
+A primeira forma, seria aumentando o número de exemplos do conjunto de treinamento, até o ponto em que o modelo não se 'prenda' a todos os exemplos fornecidos, e aumente sua capacidade de generalização (o modelo perde a sensibilidade a todos os pontos fornecidos). Neste momento, deve-se observar as curvas, de modo que a curva ligada ao erro de generalização, assuma valores próximos ao da curva de treinamento e as duas possam 'convergir' para um mesmo patamar de valores ótimos. 
+
+A segunda forma, seria reduzir a ordem do polinômio utilizado pelo modelo. Conforme mencionado acima, modelos de grandes ordens tendem a se 'prender' aos dados fornecidos no treinamento, e assim, resultam em pequenos erros de treinamento e grande erros de validação (erros quando apresentados a dados não vistos durante o treinamento). Consequentemente, ao reduzir a ordem do polinômio utilizado, ele tende assumir valores médios entre os valores dos exemplos de treinamento, o que aumenta sua capacidade de generalização. Análogo ao descrito acima, a curva que apresenta os erros de validação deve ser observada, a fim de que sejam apresentados valores próximos ao da curva de treinamento.
+
+Quão maior for a ordem do polinômio utilizado, menor será o seu erro de treinamento e maior seu erro de validação. Estes casos sobreajustados, apresentam grande capacidade e pequena generalização. Deve-se adequar os modelos, para que sejam utilizados, ou polinômios de ordem adequada, ou conjuntos de treinamento de tamanho adequado. É necessário que haja uma relação de compromisso.
+
+B. Modelos subajustados:
+Modelos subajustados, são caracterizados por não apresentarem valores adequados tanto para erro de treinamento quanto para erro de validação, ou seja, tais modelos não possuem boa capacidade de aprender os dados fornecidos no treinamento, e nem capacidade de generalização (para dados fornecidos que não foram apresentados na fase de treinamento). 
+
+Para este caso, simplesmente aumentar o número de exemplos de treinamento, não irá acarretar em melhora no desempenho do modelo. Sendo assim, é necessário que seja escolhido um maior valor para a ordem do polinômio utilizado. A ordem adequada, é aquela que apresenta uma ótima relação de compromisso entre os valores dos erros de treinamento e validação. Importante mencionar que o erro sempre estará presente em sistemas ótimos.
+
+
+
